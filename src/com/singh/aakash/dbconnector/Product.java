@@ -1,10 +1,12 @@
+package com.singh.aakash.dbconnector;
+
 import java.io.Serializable;
 
 /**
  * Created by aakash on 17-10-2015.
  */
 public class Product implements Serializable{
-
+    public static final long serialVersionUID = 42L;
     String category;
     String name;
     String description;

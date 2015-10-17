@@ -1,4 +1,7 @@
-import java.io.*;
+import com.singh.aakash.dbconnector.Product;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -9,9 +12,9 @@ public class GreetingServer extends Thread
 
     Product product;
 
-    public GreetingServer(int port,Product product) throws IOException
+    public GreetingServer(int port) throws IOException
     {
-        this.product=product;
+       // this.product=product;
         serverSocket = new ServerSocket(port);
 
     }
@@ -27,13 +30,21 @@ public class GreetingServer extends Thread
                 Socket server = serverSocket.accept();
                 System.out.println("Just connected to "
                         + server.getRemoteSocketAddress());
-               // ObjectInputStream in =
-                //        new ObjectInputStream(server.getInputStream());
+
+                //Thread.sleep(1000);
+                ObjectInputStream in =
+                        new ObjectInputStream(server.getInputStream());
+                product=(Product)in.readObject();
+
+                System.out.println(product.toString());
+
+
+
                 //System.out.println(in.readUTF());
-                ObjectOutputStream out =
-                        new ObjectOutputStream(server.getOutputStream());
-                out.writeObject(product);
-                out.flush();
+                //ObjectOutputStream out =
+                //        new ObjectOutputStream(server.getOutputStream());
+                //out.writeObject(product);
+                //out.flush();
                 server.close();
             }catch(SocketTimeoutException s)
             {
@@ -43,17 +54,19 @@ public class GreetingServer extends Thread
             {
                 e.printStackTrace();
                 break;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
         }
     }
 
     public static void main(String [] args)
     {
-        int port = Integer.parseInt(args[0]);
+        int port = 3000;
         try
         {
-            Product product=new Product("mobile","samsung","yo","100");
-            Thread t = new GreetingServer(port,product);
+//            Product product=new Product("mobile","samsung","yo","100");
+            Thread t = new GreetingServer(port);
             t.start();
         }catch(IOException e)
         {
