@@ -1,3 +1,4 @@
+import com.singh.aakash.dbconnector.JDBCConnect;
 import com.singh.aakash.dbconnector.Product;
 
 import java.io.IOException;
@@ -25,27 +26,19 @@ public class GreetingServer extends Thread
         {
             try
             {
-                System.out.println("Waiting for client on port " +
-                        serverSocket.getLocalPort() + "...");
+                System.out.println("Waiting for client on port " + serverSocket.getLocalPort() + "...");
                 Socket server = serverSocket.accept();
-                System.out.println("Just connected to "
-                        + server.getRemoteSocketAddress());
-
-                //Thread.sleep(1000);
-                ObjectInputStream in =
-                        new ObjectInputStream(server.getInputStream());
+                System.out.println("Just connected to " + server.getRemoteSocketAddress());
+                ObjectInputStream in = new ObjectInputStream(server.getInputStream());
                 product=(Product)in.readObject();
 
                 System.out.println(product.toString());
 
-
-
-                //System.out.println(in.readUTF());
-                //ObjectOutputStream out =
-                //        new ObjectOutputStream(server.getOutputStream());
-                //out.writeObject(product);
-                //out.flush();
                 server.close();
+
+                JDBCConnect jdbcConnect=new JDBCConnect(product);
+
+
             }catch(SocketTimeoutException s)
             {
                 System.out.println("Socket timed out!");
@@ -62,7 +55,7 @@ public class GreetingServer extends Thread
 
     public static void main(String [] args)
     {
-        int port = 3000;
+        int port = 3001;
         try
         {
 //            Product product=new Product("mobile","samsung","yo","100");
