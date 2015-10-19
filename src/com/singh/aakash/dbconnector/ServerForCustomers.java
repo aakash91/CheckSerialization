@@ -53,6 +53,19 @@ public class ServerForCustomers extends Thread
          out.flush();
 
      }
+     else
+     {
+         JDBCConnect1 jdbcConnect1=new JDBCConnect1(choice);
+
+         //categories=jdbcConnect1.getCategories();
+         for(String s:jdbcConnect1.getListOfProducts()){
+             System.out.println(s);
+         }
+         out.writeObject(jdbcConnect1.getListOfProducts());
+         out.flush();
+
+     }
+
 
  server.close();
 
