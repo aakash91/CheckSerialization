@@ -101,7 +101,7 @@ public class JDBCConnect2 {
 //            String sql = "INSERT INTO Products " + "VALUES "+"('" + product.getCategory()+"', '"+ product.getName()+"', '"+product.getDescription()+"', '"+product.getPrice()+"')";
 //            System.out.println(sql);
 //            stmt.executeUpdate(sql);
-            String sql="select name, description,price from Product where category = '" + category +"'," + "placeId= '" + placeId +"'";
+            String sql="select name, description,price from Product where category = '" + category +"' and " + "placeId= '" + placeId +"'";
             System.out.println(sql);
             ResultSet rs=stmt.executeQuery(sql);
 

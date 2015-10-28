@@ -31,7 +31,7 @@ public class JDBCConnect {
 
             //STEP 4: Execute a query
             stmt=conn.createStatement();
-            String sql = "INSERT INTO Products " + "VALUES "+"('" + product.getCategory()+"', '"+ product.getName()+"', '"+product.getDescription()+"', '"+product.getPrice()+"')";
+            String sql = "INSERT INTO Product " + "VALUES "+"('" + product.getPlaceId()+"', '"+ product.getCategory()+"', '"+ product.getName()+"', '"+product.getDescription()+"', '"+product.getPrice()+"')";
             System.out.println(sql);
             stmt.executeUpdate(sql);
 //            ResultSet rs=stmt.executeQuery("select * from Persons");

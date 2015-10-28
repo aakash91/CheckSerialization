@@ -11,14 +11,23 @@ public class Product implements Serializable{
     String name;
     String description;
     String price;
+    String placeId;
 
-    public Product(String category, String name, String description, String price) {
+    public Product(String category, String name, String description, String price,String placeId) {
         this.category = category;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.placeId=placeId;
     }
 
+    public String getPlaceId() {
+        return placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
 
     public String getCategory() {
         return category;
