@@ -18,6 +18,7 @@ public class ServerForCustomers1 extends Thread
     String placeId;
     List<String> recievedList;
     List<String> categories;
+    List<String> AdList;
 
     public ServerForCustomers1(int port) throws IOException
     {
@@ -25,6 +26,7 @@ public class ServerForCustomers1 extends Thread
         serverSocket = new ServerSocket(port);
         categories=new ArrayList<String>();
         recievedList=new ArrayList<String>();
+        AdList=new ArrayList<String>();
     }
 
     public void run()
@@ -59,6 +61,18 @@ public class ServerForCustomers1 extends Thread
                     out.flush();
 
                 }
+                else if (choice.equals("Ads"))
+                {
+                    JDBCConnect2 jdbcConnect2=new JDBCConnect2(placeId,"a","b");
+                    AdList=jdbcConnect2.getAdList();
+                    for(String s:AdList){
+                        System.out.println(s);
+                    }
+                    out.writeObject(AdList);
+                    out.flush();
+
+                }
+
                 else
                 {
                     JDBCConnect2 jdbcConnect2=new JDBCConnect2(choice,placeId);

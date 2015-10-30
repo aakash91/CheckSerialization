@@ -6,18 +6,21 @@ import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GreetingServer extends Thread
 {
     private ServerSocket serverSocket;
 
     Product product;
-
+    List<String> adString;
+    JDBCConnect jdbcConnect;
     public GreetingServer(int port) throws IOException
     {
        // this.product=product;
         serverSocket = new ServerSocket(port);
-
+        adString=new ArrayList<String>();
     }
 
     public void run()
@@ -30,14 +33,29 @@ public class GreetingServer extends Thread
                 Socket server = serverSocket.accept();
                 System.out.println("Just connected to " + server.getRemoteSocketAddress());
                 ObjectInputStream in = new ObjectInputStream(server.getInputStream());
-                product=(Product)in.readObject();
+                Object o=in.readObject();
 
-                System.out.println(product.toString());
+
+                if(o instanceof Product) {
+                    System.out.print("yo");
+                    product = (Product)o;
+
+                    System.out.println(product.toString());
+
+
+
+                    jdbcConnect = new JDBCConnect(product);
+                }
+                if(o instanceof List<?>){
+                    adString=(ArrayList<String>) o;
+                    String placeId=adString.get(0);
+                    String ads=adString.get(1);
+                    String shop=adString.get(2);
+                    jdbcConnect=new JDBCConnect(placeId,ads,shop);
+                }
 
                 server.close();
-
-                JDBCConnect jdbcConnect=new JDBCConnect(product);
-
+                in.close();
 
             }catch(SocketTimeoutException s)
             {
