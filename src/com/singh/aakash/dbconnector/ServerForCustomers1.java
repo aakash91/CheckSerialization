@@ -19,6 +19,7 @@ public class ServerForCustomers1 extends Thread
     List<String> recievedList;
     List<String> categories;
     List<String> AdList;
+    List<String> AdsCustList;
 
     public ServerForCustomers1(int port) throws IOException
     {
@@ -27,6 +28,7 @@ public class ServerForCustomers1 extends Thread
         categories=new ArrayList<String>();
         recievedList=new ArrayList<String>();
         AdList=new ArrayList<String>();
+        AdsCustList=new ArrayList<String>();
     }
 
     public void run()
@@ -41,10 +43,15 @@ public class ServerForCustomers1 extends Thread
                 ObjectInputStream in = new ObjectInputStream(server.getInputStream());
                 //product=(Product)in.readObject();
 
-// System.out.println(product.toString());
                 recievedList= (ArrayList<String>)in.readObject();
+                List<String> recievedList1=new ArrayList<String>();
+
+                for(int i=0;i<(recievedList.size()-1);i++){
+                    recievedList1.add(recievedList.get(i));
+                }
+
                 placeId=recievedList.get(0);
-                choice=recievedList.get(1);
+                choice=recievedList.get(recievedList.size()-1);
                 System.out.println(choice);
                 System.out.println(placeId);
                 //in.close();
@@ -69,6 +76,17 @@ public class ServerForCustomers1 extends Thread
                         System.out.println(s);
                     }
                     out.writeObject(AdList);
+                    out.flush();
+
+                }
+                else if (choice.equals("Adver"))
+                {
+                    JDBCConnect2 jdbcConnect2=new JDBCConnect2(recievedList);
+                    AdsCustList=jdbcConnect2.getAdsCustList();
+                    for(String s:AdsCustList){
+                        System.out.println(s);
+                    }
+                    out.writeObject(AdsCustList);
                     out.flush();
 
                 }
