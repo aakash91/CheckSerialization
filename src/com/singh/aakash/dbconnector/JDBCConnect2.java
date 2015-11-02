@@ -336,12 +336,13 @@ public class JDBCConnect2 {
 
 
             if(count==1){
-                String sql1="select username,placeid from Business where username='"+username +"' and pwd ='"+password +"'" ;
+                String sql1="select username,placeid,pwd from Business where username='"+username +"' and pwd ='"+password +"'" ;
                 ResultSet rs1=stmt.executeQuery(sql1);
 
                 while(rs1.next()) {
                     afterLogin.add(rs1.getString(1));
                     afterLogin.add(rs1.getString(2));
+                    afterLogin.add(rs1.getString(3));
                 }
 
             }else{
