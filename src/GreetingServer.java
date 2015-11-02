@@ -16,11 +16,13 @@ public class GreetingServer extends Thread
     Product product;
     List<String> adString;
     JDBCConnect jdbcConnect;
+    List<String> recieved;
     public GreetingServer(int port) throws IOException
     {
        // this.product=product;
         serverSocket = new ServerSocket(port);
         adString=new ArrayList<String>();
+        recieved=new ArrayList<String>();
     }
 
     public void run()
@@ -47,11 +49,24 @@ public class GreetingServer extends Thread
                     jdbcConnect = new JDBCConnect(product);
                 }
                 if(o instanceof List<?>){
-                    adString=(ArrayList<String>) o;
-                    String placeId=adString.get(0);
-                    String ads=adString.get(1);
-                    String shop=adString.get(2);
+//                    adString=(ArrayList<String>) o;
+//                    String placeId=adString.get(0);
+//                    String ads=adString.get(1);
+//                    String shop=adString.get(2);
+//                    jdbcConnect=new JDBCConnect(placeId,ads,shop);
+                    recieved=(ArrayList<String>) o;
+                    if(recieved.get(recieved.size()-1).equals("ads")){
+                        String placeId=recieved.get(0);
+                    String ads=recieved.get(1);
+                    String shop=recieved.get(2);
                     jdbcConnect=new JDBCConnect(placeId,ads,shop);
+                    }
+                    else if(recieved.get(recieved.size()-1).equals("cat")){
+                        String placeId=recieved.get(0);
+                        String category=recieved.get(1);
+                    jdbcConnect =new JDBCConnect(placeId,category);
+                    }
+
                 }
 
                 server.close();

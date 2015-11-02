@@ -49,7 +49,9 @@ public class JDBCConnect2 {
 //            String sql = "INSERT INTO Products " + "VALUES "+"('" + product.getCategory()+"', '"+ product.getName()+"', '"+product.getDescription()+"', '"+product.getPrice()+"')";
 //            System.out.println(sql);
 //            stmt.executeUpdate(sql);
-            String sql="select DISTINCT category from Product "+"where placeId= '"+placeId+"'";
+            //String sql="select DISTINCT category from Product "+"where placeId= '"+placeId+"'"; //tobeback
+            String idPlace=placeId.replace("-","");
+            String sql="select DISTINCT category from Category_"+idPlace;
             System.out.println(sql);
             ResultSet rs=stmt.executeQuery(sql);
 //
@@ -167,7 +169,9 @@ public class JDBCConnect2 {
 //            String sql = "INSERT INTO Products " + "VALUES "+"('" + product.getCategory()+"', '"+ product.getName()+"', '"+product.getDescription()+"', '"+product.getPrice()+"')";
 //            System.out.println(sql);
 //            stmt.executeUpdate(sql);
-            String sql="select name, description,price from Product where category = '" + category +"' and " + "placeId= '" + placeId +"'";
+            //String sql="select name, description,price from Product where category = '" + category +"' and " + "placeId= '" + placeId +"'";
+            String idPlace=placeId.replace("-","");
+            String sql="select name, description,price from Product_"+idPlace +" where category = '" + category + "'" ;
             System.out.println(sql);
             ResultSet rs=stmt.executeQuery(sql);
 
