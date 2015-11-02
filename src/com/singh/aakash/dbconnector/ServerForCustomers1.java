@@ -90,6 +90,12 @@ public class ServerForCustomers1 extends Thread
                     out.flush();
 
                 }
+                else if(choice.equals("login")){
+                    String username=recievedList.get(0);
+                    String pwd=recievedList.get(1);
+                    JDBCConnect2 jdbcConnect2=new JDBCConnect2(username,pwd,"a","b");
+                    out.writeObject(jdbcConnect2.getAfterLogin());
+                }
 
                 else
                 {
