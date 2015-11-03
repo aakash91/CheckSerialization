@@ -96,7 +96,21 @@ public class ServerForCustomers1 extends Thread
                     JDBCConnect2 jdbcConnect2=new JDBCConnect2(username,pwd,"a","b");
                     out.writeObject(jdbcConnect2.getAfterLogin());
                 }
-
+                else if(choice.equals("login_normal")){
+                    String username=recievedList.get(0);
+                    String pwd=recievedList.get(1);
+                    JDBCConnect2 jdbcConnect2=new JDBCConnect2(username,pwd,"b","b");
+                    out.writeObject(jdbcConnect2.getAfterLogin());
+                }
+                else if(choice.equals("signUp")){
+                    String username=recievedList.get(0);
+                    String email=recievedList.get(1);
+                    String name=recievedList.get(2);
+                    String mobile=recievedList.get(3);
+                    String pwd=recievedList.get(4);
+                    JDBCConnect2 jdbcConnect2=new JDBCConnect2(username,email,name,mobile,pwd);
+                    out.writeObject(jdbcConnect2.getAfterLogin());
+                }
                 else
                 {
                     JDBCConnect2 jdbcConnect2=new JDBCConnect2(choice,placeId);

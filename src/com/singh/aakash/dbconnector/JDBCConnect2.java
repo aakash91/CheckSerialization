@@ -318,9 +318,10 @@ public class JDBCConnect2 {
 //            String sql = "INSERT INTO Products " + "VALUES "+"('" + product.getCategory()+"', '"+ product.getName()+"', '"+product.getDescription()+"', '"+product.getPrice()+"')";
 //            System.out.println(sql);
 //            stmt.executeUpdate(sql);
-            String sql="select count(*) from Business where username='"+username +"' and pwd ='"+password +"'" ;
-            System.out.println(sql);
-            ResultSet rs=stmt.executeQuery(sql);
+            if(abc.equals("a")) {
+                String sql = "select count(*) from Business where username='" + username + "' and pwd ='" + password + "'";
+                System.out.println(sql);
+                ResultSet rs = stmt.executeQuery(sql);
 //
 //            while(rs.next()) {
 //                // System.out.println(rs.getInt(1) + "  " + rs.getString(2) + "  " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5));
@@ -328,26 +329,146 @@ public class JDBCConnect2 {
 //                AdList.add(rs.getString(1));
 //
 //            }
-            int count=0;
-            while(rs.next()) {
-                count = rs.getInt(1);
-                System.out.println(count);
-            }
-
-
-            if(count==1){
-                String sql1="select username,placeid,pwd from Business where username='"+username +"' and pwd ='"+password +"'" ;
-                ResultSet rs1=stmt.executeQuery(sql1);
-
-                while(rs1.next()) {
-                    afterLogin.add(rs1.getString(1));
-                    afterLogin.add(rs1.getString(2));
-                    afterLogin.add(rs1.getString(3));
+                int count = 0;
+                while (rs.next()) {
+                    count = rs.getInt(1);
+                    System.out.println(count);
                 }
 
-            }else{
-                afterLogin.add("invalid credentials");
+
+                if (count == 1) {
+                    String sql1 = "select username,placeid,pwd from Business where username='" + username + "' and pwd ='" + password + "'";
+                    ResultSet rs1 = stmt.executeQuery(sql1);
+
+                    while (rs1.next()) {
+                        afterLogin.add(rs1.getString(1));
+                        afterLogin.add(rs1.getString(2));
+                        afterLogin.add(rs1.getString(3));
+                    }
+
+                } else {
+                    afterLogin.add("invalid credentials");
+                }
             }
+            else {
+                String sql = "select count(*) from normal_user where username='" + username + "' and pwd ='" + password + "'";
+                System.out.println(sql);
+                ResultSet rs = stmt.executeQuery(sql);
+//
+//            while(rs.next()) {
+//                // System.out.println(rs.getInt(1) + "  " + rs.getString(2) + "  " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5));
+//                System.out.println(rs.getString(1));
+//                AdList.add(rs.getString(1));
+//
+//            }
+                int count = 0;
+                while (rs.next()) {
+                    count = rs.getInt(1);
+                    System.out.println(count);
+                }
+
+
+                if (count == 1) {
+                    String sql1 = "select username,pwd from normal_user where username='" + username + "' and pwd ='" + password + "'";
+                    ResultSet rs1 = stmt.executeQuery(sql1);
+
+                    while (rs1.next()) {
+                        afterLogin.add(rs1.getString(1));
+                        afterLogin.add(rs1.getString(2));
+                        //afterLogin.add(rs1.getString(3));
+                    }
+
+                } else {
+                    afterLogin.add("invalid credentials");
+                }
+            }
+
+
+            conn.close();
+
+
+        }catch(SQLException se){
+            //Handle errors for JDBC
+            se.printStackTrace();
+        }catch(Exception e){
+            //Handle errors for Class.forName
+            e.printStackTrace();
+        }finally{
+            //finally block used to close resources
+            try{
+                if(stmt!=null)
+                    conn.close();
+            }catch(SQLException se){
+            }// do nothing
+            try{
+                if(conn!=null)
+                    conn.close();
+            }catch(SQLException se){
+                se.printStackTrace();
+            }//end finally try
+        }//end try
+        System.out.println("Goodbye!");
+    }//end main
+
+
+
+    public JDBCConnect2(String username,String emailId,String name,String mobile,String pwd) {
+        //this.product=product;
+        Connection conn = null;
+        Statement stmt = null;
+        afterLogin=new ArrayList<String>();
+
+        try{
+            //STEP 2: Register JDBC driver
+            Class.forName("com.mysql.jdbc.Driver");
+
+            //STEP 3: Open a connection
+            System.out.println("Connecting to a selected database...");
+            conn = DriverManager.getConnection(DB_URL, USER, PASS);
+            System.out.println("Connected database successfully...");
+
+            //STEP 4: Execute a query
+            stmt=conn.createStatement();
+//            String sql = "INSERT INTO Products " + "VALUES "+"('" + product.getCategory()+"', '"+ product.getName()+"', '"+product.getDescription()+"', '"+product.getPrice()+"')";
+//            System.out.println(sql);
+//            stmt.executeUpdate(sql);
+
+                String sql = "select count(*) from normal_user where username='" + username + "' and email ='" + emailId + "'";
+                System.out.println(sql);
+                ResultSet rs = stmt.executeQuery(sql);
+//
+//            while(rs.next()) {
+//                // System.out.println(rs.getInt(1) + "  " + rs.getString(2) + "  " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5));
+//                System.out.println(rs.getString(1));
+//                AdList.add(rs.getString(1));
+//
+//            }
+                int count = 0;
+                while (rs.next()) {
+                    count = rs.getInt(1);
+                    System.out.println(count);
+                }
+
+
+                if (count == 0) {
+//                    String sql1 = "select username,placeid,pwd from Business where username='" + username + "' and pwd ='" + password + "'";
+//                    ResultSet rs1 = stmt.executeQuery(sql1);
+//
+//                    while (rs1.next()) {
+//                        afterLogin.add(rs1.getString(1));
+//                        afterLogin.add(rs1.getString(2));
+//                        afterLogin.add(rs1.getString(3));
+//                    }
+
+                    String sql1="Insert into normal_user Values ('"+username+"','"+emailId+"','"+name+"','"+mobile+"','"+pwd+   "')";
+                    stmt.executeUpdate(sql1);
+                    afterLogin.add("added");
+                        RegisterANormalUser registerANormalUser=new RegisterANormalUser();
+                        registerANormalUser.add(username,emailId,name,mobile,pwd);
+
+                } else {
+                    afterLogin.add("invalid credentials");
+                }
 
 
 
@@ -376,6 +497,11 @@ public class JDBCConnect2 {
         }//end try
         System.out.println("Goodbye!");
     }//end main
+
+
+
+
+
     public List<String> getListOfProducts() {
         return listOfProducts;
     }
